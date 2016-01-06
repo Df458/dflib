@@ -88,4 +88,10 @@ public class SettingsGrid : Grid
         label_box_list[entry.index].remove(entry.label);
         control_box_list[entry.index].remove(child);
     }
+
+    public Widget get_label_for_child(Widget child)
+    {
+        index_label_entry entry = children.get(child);
+        return entry.label;
+    }
 }

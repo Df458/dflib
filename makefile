@@ -15,9 +15,9 @@ SRCS:=$(wildcard $(SRCPATH)*.vala)
 
 # Flags
 VFLAGS=-c -H $(LIBRARY).h --cc=$(CC) --vapi=$(LIBRARY).vapi
-VLIBS=--pkg=glib-2.0 --pkg=gtk+-3.0 --pkg=gee-0.8
-CFLAGS=-I$(SRCPATH)$(COMMONTARGET) `$(PKGCONFIG) --cflags glib-2.0 gtk+-3.0 gee-0.8`
-CLIBS=`$(PKGCONFIG) --libs glib-2.0 gtk+-3.0 gee-0.8`
+VLIBS=--pkg=glib-2.0 --pkg=gtk+-3.0 --pkg=gee-0.8 --pkg sqlheavy-0.1
+CFLAGS=-I$(SRCPATH)$(COMMONTARGET) `$(PKGCONFIG) --cflags glib-2.0 gtk+-3.0 gee-0.8 sqlheavy-0.1`
+CLIBS=`$(PKGCONFIG) --libs glib-2.0 gtk+-3.0 gee-0.8 sqlheavy-0.1`
 
 # Directory inits
 $(shell mkdir -p $(OBJPATH))

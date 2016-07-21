@@ -42,3 +42,4 @@ install: all
 	cp $(LIBPATH)/$(LIBRARY).h /usr/include
 	cp $(LIBPATH)/$(LIBRARY).vapi /usr/share/vala/vapi
 	cp $(LIBRARY).deps /usr/share/vala/vapi
+	cp $(LIBPATH)/$(LIBRARY).pc /usr/lib/pkgconfig

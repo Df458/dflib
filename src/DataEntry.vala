@@ -1,3 +1,5 @@
+namespace DFLib
+{
 public abstract class DataEntry
 {
     public int  id          { get { return _id; } }
@@ -29,5 +31,6 @@ public abstract class DataEntry
         _id = new_id;
     }
 
-    private int? _id = -1;
+    private int _id = -1;
+}
 }

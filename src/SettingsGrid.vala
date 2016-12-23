@@ -1,5 +1,7 @@
 using Gtk;
 
+namespace DFLib
+{
 public class SettingsGrid : Grid
 {
     private struct index_label_entry
@@ -94,4 +96,5 @@ public class SettingsGrid : Grid
         index_label_entry entry = children.get(child);
         return entry.label;
     }
+}
 }

@@ -18,7 +18,7 @@ deps = [glib, gobject, gee, gtk, sqlheavy]
 subdir('src')
 
 # Dependency
-dflib = declare_dependency(link_with : target)
+dflib = declare_dependency(include_directories : include_directories('src'), link_with : target)
 
 h = ['.'] # subdirectories of ${prefix}/${includedir} to add to header path
 pkgconfig.generate(libraries : ['-L/usr/local/lib', '-ldflib'],

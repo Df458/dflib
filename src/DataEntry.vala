@@ -1,36 +1,69 @@
 namespace DFLib
 {
-public abstract class DataEntry
-{
-    public int  id          { get { return _id; } }
-    public bool is_inserted { get { return id != -1; } }
-
-    public DataEntry()
+    public abstract class DataEntry
     {
-        _id = -1;
-    }
+        public int  id          { get { return _id; } }
+        public bool is_inserted { get { return id != -1; } }
 
-    public DataEntry.from_record(SQLHeavy.Record r)
-    {
-        try {
-            _id = r.fetch_int(r.field_index("id"));
-            build_from_record(r);
-        } catch(SQLHeavy.Error e) {
-            warning("Cannot init DataEntry from record: %s", e.message);
+        public DataEntry()
+        {
             _id = -1;
         }
+
+        public DataEntry.from_record(SQLHeavy.Record r)
+        {
+            try {
+                _id = r.fetch_int(r.field_index("id"));
+                build_from_record(r);
+            } catch(SQLHeavy.Error e) {
+                warning("Cannot init DataEntry from record: %s", e.message);
+                _id = -1;
+            }
+        }
+
+        public abstract SQLHeavy.Query? insert(SQLHeavy.Queryable q);
+        public abstract SQLHeavy.Query? update(SQLHeavy.Queryable q);
+        public abstract SQLHeavy.Query? remove(SQLHeavy.Queryable q);
+        protected abstract bool build_from_record(SQLHeavy.Record r);
+
+        protected void set_id(int new_id)
+        {
+            _id = new_id;
+        }
+
+        private int _id = -1;
     }
 
-    public abstract SQLHeavy.Query? insert(SQLHeavy.Queryable q);
-    public abstract SQLHeavy.Query? update(SQLHeavy.Queryable q);
-    public abstract SQLHeavy.Query? remove(SQLHeavy.Queryable q);
-    protected abstract bool build_from_record(SQLHeavy.Record r);
-
-    protected void set_id(int new_id)
+    public abstract class DataEntryGuid
     {
-        _id = new_id;
-    }
+        public string guid          { get { return _guid; } }
+        public bool is_inserted { get { return guid != null; } }
 
-    private int _id = -1;
-}
+        public DataEntryGuid()
+        {
+        }
+
+        public DataEntryGuid.from_record(SQLHeavy.Record r)
+        {
+            try {
+                _guid = r.fetch_string(r.field_index("guid"));
+                build_from_record(r);
+            } catch(SQLHeavy.Error e) {
+                warning("Cannot init DataEntry from record: %s", e.message);
+                _guid = null;
+            }
+        }
+
+        public abstract SQLHeavy.Query? insert(SQLHeavy.Queryable q);
+        public abstract SQLHeavy.Query? update(SQLHeavy.Queryable q);
+        public abstract SQLHeavy.Query? remove(SQLHeavy.Queryable q);
+        protected abstract bool build_from_record(SQLHeavy.Record r);
+
+        protected void set_guid(string new_guid)
+        {
+            _guid = new_guid;
+        }
+
+        private string _guid = null;
+    }
 }

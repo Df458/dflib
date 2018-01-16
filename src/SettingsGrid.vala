@@ -2,99 +2,66 @@ using Gtk;
 
 namespace DFLib
 {
-public class SettingsGrid : Grid
+public class SettingsEntry : Box
 {
-    private struct index_label_entry
+    public Widget? title;
+    public Widget  control;
+
+    public SettingsEntry(string? new_title, Widget new_control)
     {
-        int index;
-        Widget label;
-    }
-
-    private int                                     column_count = 0;
-    private Gee.ArrayList<Box>                      label_box_list;
-    private Gee.ArrayList<Box>                      control_box_list;
-    private Gee.HashMap<Widget, index_label_entry?> children;
-
-    public SettingsGrid()
-    {
-        label_box_list   = new Gee.ArrayList<Box>();
-        control_box_list = new Gee.ArrayList<Box>();
-        children         = new Gee.HashMap<Widget, index_label_entry?>();
-
-        this.row_spacing = 18;
-        this.column_spacing = 12;
-    }
-
-    public new void add(string? label, Widget child, int section)
-    {
-        Label label_widget = new Label(label);
-
-        label_widget.sensitive = child.sensitive;
-        label_widget.halign = Align.END;
-
-        while(section >= column_count)
-        {
-            Box label_box = new Box(Orientation.VERTICAL, 6);
-            label_box.set_homogeneous(true);
-            Box control_box = new Box(Orientation.VERTICAL, 6);
-            control_box.set_homogeneous(true);
-            label_box_list.add(label_box);
-            control_box_list.add(control_box);
-
-            this.attach(label_box, 0, column_count);
-            this.attach(control_box, 1, column_count);
-
-            ++column_count;
+        if(new_title != null) {
+            title = new Label(new_title);
+            pack_start(title);
         }
-
-        label_box_list[section].add(label_widget);
-        control_box_list[section].add(child);
-
-        index_label_entry entry = index_label_entry();
-        entry.index = section;
-        entry.label = label_widget;
-        children.set(child, entry);
+        pack_end(new_control);
     }
 
-    public new void add_custom(Widget label_widget, Widget child, int section)
+    public SettingsEntry.custom(Widget? new_title, Widget new_control)
     {
-        label_widget.halign = Align.END;
-        child.halign = Align.START;
+        title = new_title;
 
-        while(section >= label_box_list.size)
-        {
-            Box label_box = new Box(Orientation.VERTICAL, 6);
-            label_box.set_homogeneous(true);
-            Box control_box = new Box(Orientation.VERTICAL, 6);
-            control_box.set_homogeneous(true);
-            label_box_list.add(label_box);
-            control_box_list.add(control_box);
+        if(title != null)
+            pack_start(title);
+        pack_end(new_control);
+    }
+}
 
-            this.attach(label_box, 0, label_box_list.size - 1);
-            this.attach(control_box, 1, control_box_list.size - 1);
+public class SettingsList : Box
+{
+    public SettingsList()
+    {
+        list = new ListBox();
+        pack_start(list);
+    }
+
+    public new void add(string? label, Widget child)
+    {
+        if(entry_map.has_key(child)) {
+            warning("SettingsList: Tried to add a child that already exists!");
+            return;
         }
+        SettingsEntry entry = new SettingsEntry(label, child);
+        entry_map.set(child, entry);
+        list.add(entry);
+    }
 
-        label_box_list[section].add(label_widget);
-        control_box_list[section].add(child);
-
-        index_label_entry entry = index_label_entry();
-        entry.index = section;
-        entry.label = label_widget;
-        children.set(child, entry);
+    public new void add_custom(Widget? label, Widget child)
+    {
+        if(entry_map.has_key(child)) {
+            warning("SettingsList: Tried to add a child that already exists!");
+            return;
+        }
+        SettingsEntry entry = new SettingsEntry.custom(label, child);
+        entry_map.set(child, entry);
+        list.add(entry);
     }
 
     public new void remove(Widget child)
     {
-        index_label_entry entry = children.get(child);
-        children.unset(child);
-        label_box_list[entry.index].remove(entry.label);
-        control_box_list[entry.index].remove(child);
+        list.remove(entry_map.get(child));
     }
 
-    public Widget get_label_for_child(Widget child)
-    {
-        index_label_entry entry = children.get(child);
-        return entry.label;
-    }
+    private ListBox list;
+    private Gee.HashMap<Widget, SettingsEntry> entry_map;
 }
 }

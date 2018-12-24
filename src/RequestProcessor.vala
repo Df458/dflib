@@ -46,7 +46,11 @@ public abstract class RequestProcessor
             error("Failed to initialize the database at %s: %s", path, e.message);
         }
 
-        requests = new AsyncQueue<DatabaseRequest>[3];
+        requests = {
+            new AsyncQueue<DatabaseRequest>(),
+            new AsyncQueue<DatabaseRequest>(),
+            new AsyncQueue<DatabaseRequest>(),
+        };
         processing_thread = new Thread<void*>(null, process);
     }
 

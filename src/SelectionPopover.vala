@@ -83,7 +83,7 @@ public abstract class SelectionPopover<T> : Popover
         }
 
         main_box.add(tag_scroll);
-        tag_scroll.add_with_viewport(tag_list);
+        tag_scroll.add(tag_list);
     }
 
     protected CheckListEntry<T> add_option(string option, T data)

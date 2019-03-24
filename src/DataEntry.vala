@@ -1,6 +1,6 @@
 namespace DFLib
 {
-    public abstract class DataEntry
+    public abstract class DataEntry : Object
     {
         public int  id          { get { return _id; } }
         public bool is_inserted { get { return id != -1; } }
@@ -34,7 +34,7 @@ namespace DFLib
         private int _id = -1;
     }
 
-    public abstract class DataEntryGuid
+    public abstract class DataEntryGuid : Object
     {
         public string guid          { get { return _guid; } }
         public bool is_inserted { get { return guid != null; } }

@@ -2,9 +2,11 @@
 <glade-catalog name="dflib" library="dflib" depends="gtk+" init-function="dflib_init">
     <glade-widget-classes>
         <glade-widget-class name="DFLibWidgetsStarBox" generic-name="starbox" title="Star Box" get-type-function="df_lib_widgets_star_box_get_type" icon-name="semi-starred"/>
+        <glade-widget-class name="DFLibWidgetsEditableLabel" generic-name="editablelabel" title="Star Box" get-type-function="df_lib_widgets_editable_label_get_type" icon-name="gtk-edit"/>
     </glade-widget-classes>
 
     <glade-widget-group name="DFLib" title="DFLib Widgets">
         <glade-widget-class-ref name="DFLibWidgetsStarBox"/>
+        <glade-widget-class-ref name="DFLibWidgetsEditableLabel"/>
     </glade-widget-group>
 </glade-catalog>

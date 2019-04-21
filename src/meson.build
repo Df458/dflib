@@ -9,6 +9,7 @@ src = files(
   'RequestProcessor.vala',
   'Resource.vala',
 
+  'widgets/EditableLabel.vala',
   'widgets/StarBox.vala',
   )
 target = shared_library('dflib', src,

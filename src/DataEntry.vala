@@ -1,6 +1,8 @@
+using SQLHeavy;
+
 namespace DFLib {
     public abstract class DataEntry : Object {
-        public int  id          { get { return _id; } }
+        public int id { get { return _id; } }
         public bool is_inserted { get { return id != -1; } }
 
         public DataEntry()
@@ -8,7 +10,7 @@ namespace DFLib {
             _id = -1;
         }
 
-        public DataEntry.from_record(SQLHeavy.Record r)
+        public DataEntry.from_record(Record r)
         {
             try {
                 _id = r.fetch_int(r.field_index("id"));
@@ -23,7 +25,7 @@ namespace DFLib {
          *
          * @param q The Queryable to run this query against
          */
-        public virtual SQLHeavy.Query? insert(SQLHeavy.Queryable q) throws SQLHeavy.Error {
+        public virtual Query? insert(Queryable q) throws SQLHeavy.Error {
             return null;
         }
 
@@ -31,7 +33,7 @@ namespace DFLib {
          *
          * @param q The Queryable to run this query against
          */
-        public virtual SQLHeavy.Query? update(SQLHeavy.Queryable q) throws SQLHeavy.Error {
+        public virtual Query? update(Queryable q) throws SQLHeavy.Error {
             return null;
         }
 
@@ -39,15 +41,23 @@ namespace DFLib {
          *
          * @param q The Queryable to run this query against
          */
-        public virtual SQLHeavy.Query? remove(SQLHeavy.Queryable q) throws SQLHeavy.Error {
+        public virtual Query? remove(Queryable q) throws SQLHeavy.Error {
             return null;
+        }
+
+        /** Updates data after a successful insertion
+         *
+         * @param db The database that this was inserted into
+         */
+        public virtual void post_insert (Database db) {
+            _id = (int)db.last_insert_id; // TODO
         }
 
         /** Populate data from a database record
          *
          * @param r The record to read
          */
-        protected abstract void build_from_record(SQLHeavy.Record r) throws SQLHeavy.Error;
+        protected abstract void build_from_record(Record r) throws SQLHeavy.Error;
 
         protected void set_id(int new_id) {
             _id = new_id;
@@ -64,7 +74,7 @@ namespace DFLib {
         {
         }
 
-        public DataEntryGuid.from_record(SQLHeavy.Record r)
+        public DataEntryGuid.from_record(Record r)
         {
             try {
                 _guid = r.fetch_string(r.field_index("guid"));
@@ -79,7 +89,7 @@ namespace DFLib {
          *
          * @param q The Queryable to run this query against
          */
-        public virtual SQLHeavy.Query? insert(SQLHeavy.Queryable q) throws SQLHeavy.Error {
+        public virtual Query? insert(Queryable q) throws SQLHeavy.Error {
             return null;
         }
 
@@ -87,7 +97,7 @@ namespace DFLib {
          *
          * @param q The Queryable to run this query against
          */
-        public virtual SQLHeavy.Query? update(SQLHeavy.Queryable q) throws SQLHeavy.Error {
+        public virtual Query? update(Queryable q) throws SQLHeavy.Error {
             return null;
         }
 
@@ -95,7 +105,7 @@ namespace DFLib {
          *
          * @param q The Queryable to run this query against
          */
-        public virtual SQLHeavy.Query? remove(SQLHeavy.Queryable q) throws SQLHeavy.Error {
+        public virtual Query? remove(Queryable q) throws SQLHeavy.Error {
             return null;
         }
 
@@ -103,7 +113,7 @@ namespace DFLib {
          *
          * @param r The record to read
          */
-        protected abstract void build_from_record(SQLHeavy.Record r) throws SQLHeavy.Error;
+        protected abstract void build_from_record(Record r) throws SQLHeavy.Error;
 
         protected void set_guid(string new_guid) {
             _guid = new_guid;

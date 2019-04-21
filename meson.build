@@ -27,3 +27,5 @@ pkgconfig.generate(libraries : ['-L/usr/local/lib', '-ldflib'],
              name : 'dflib',
              filebase : 'dflib',
              description : 'A helper library for GTK3 applications')
+
+install_data(files('data/dflib.xml'), install_dir: '/usr/share/glade/catalogs')

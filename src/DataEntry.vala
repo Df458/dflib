@@ -24,7 +24,11 @@ namespace DFLib
         public abstract SQLHeavy.Query? insert(SQLHeavy.Queryable q);
         public abstract SQLHeavy.Query? update(SQLHeavy.Queryable q);
         public abstract SQLHeavy.Query? remove(SQLHeavy.Queryable q);
-        protected abstract bool build_from_record(SQLHeavy.Record r);
+
+        /** Populate data from a database record
+         * @param r The record to read
+         */
+        protected abstract void build_from_record(SQLHeavy.Record r) throws SQLHeavy.Error;
 
         protected void set_id(int new_id)
         {
@@ -57,7 +61,11 @@ namespace DFLib
         public abstract SQLHeavy.Query? insert(SQLHeavy.Queryable q);
         public abstract SQLHeavy.Query? update(SQLHeavy.Queryable q);
         public abstract SQLHeavy.Query? remove(SQLHeavy.Queryable q);
-        protected abstract bool build_from_record(SQLHeavy.Record r);
+
+        /** Populate data from a database record
+         * @param r The record to read
+         */
+        protected abstract void build_from_record(SQLHeavy.Record r) throws SQLHeavy.Error;
 
         protected void set_guid(string new_guid)
         {

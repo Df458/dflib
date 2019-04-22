@@ -3,6 +3,7 @@ src = files(
 
   'AdvancedTreeModelFilter.vala',
   'DataEntry.vala',
+  'PathHelpers.vala',
   'SettingsGrid.vala',
   'SimpleItem.vala',
   'SelectionPopover.vala',

@@ -39,7 +39,7 @@ public class CheckListEntry<T> : ListBoxRow
 
 public abstract class SelectionPopover<T> : Popover
 {
-    private ListBox tag_list;
+    protected ListBox tag_list;
     private SearchEntry search_entry;
     
     private Gee.HashMap<string, T> options;
@@ -93,6 +93,15 @@ public abstract class SelectionPopover<T> : Popover
         tag_list.add(check);
 
         return check;
+    }
+
+    protected void clear_selection () {
+        tag_list.foreach(row => {
+            CheckListEntry? entry = row as CheckListEntry;
+            if(entry != null && entry.checked) {
+                entry.toggle ();
+            }
+        });
     }
 
     protected abstract T? create_item(string item);

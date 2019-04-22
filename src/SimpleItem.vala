@@ -1,5 +1,4 @@
-namespace DFLib
-{
+namespace DFLib {
 public abstract class SimpleItem : Object
 {
     public int id { get; construct; }

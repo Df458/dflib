@@ -167,20 +167,46 @@ public abstract class SingleSelectionPopover<T> : SelectionPopover<T>
         base(can_add_new, options);
     }
 
+    protected void set_selection (T object) {
+        if (selected != null) {
+            if (selected.data == object) {
+                return; // Nothing to do, selection is correct
+            }
+
+            selected.toggle ();
+
+            selected = null;
+        }
+
+        tag_list.foreach(row => {
+            CheckListEntry<T>? entry = row as CheckListEntry<T>;
+            if(entry != null && entry.data == object) {
+                entry.toggle ();
+                return;
+            }
+        });
+    }
+
     protected override void item_selected(CheckListEntry<T> item)
     {
         if(selected != item) {
-            if(selected != null)
+            if(selected != null) {
                 selected.toggle();
+            }
+
             selected = item;
             selected.toggle();
+            if (!item.checked) {
+                selected = null;
+            }
+
             selection_changed(selected);
         }
     }
 
-    protected abstract void selection_changed(CheckListEntry<T> new_item);
+    protected abstract void selection_changed(CheckListEntry<T>? new_item);
 
-    protected CheckListEntry? selected;
+    protected CheckListEntry<T>? selected;
 }
 
 public abstract class MultiSelectionPopover<T> : SelectionPopover<T>

@@ -11,7 +11,7 @@ namespace DFLib {
             int name_index = path.last_index_of_char ('/') + 2;
 
             if (name_index < path.length) {
-                int index = path.first_index_of_char ('.', name_index);
+                int index = path.index_of_char ('.', name_index);
                 if (index != -1) {
                     return path.substring (index);
                 }

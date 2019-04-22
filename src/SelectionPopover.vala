@@ -69,15 +69,18 @@ public abstract class SelectionPopover<T> : Popover
         tag_list.set_header_func(listbox_header_separator);
         tag_list.selection_mode = SelectionMode.NONE;
 
-        if(options != null)
-            foreach(Gee.Map.Entry<string, T> entry in options.entries)
+        if(options != null) {
+            foreach(Gee.Map.Entry<string, T> entry in options.entries) {
                 add_option(entry.key, entry.value);
+            }
+        }
 
         this.add(main_box);
         main_box.add(search_box);
         search_box.pack_start(search_entry, true, true);
         if(can_add_new) {
-            Button add_button = new Button.from_icon_name("list-add-symbolic");
+            add_button = new Button.from_icon_name("list-add-symbolic");
+            add_button.sensitive = false;
             add_button.clicked.connect(handle_add);
             search_box.add(add_button);
         }
@@ -88,7 +91,7 @@ public abstract class SelectionPopover<T> : Popover
 
     protected CheckListEntry<T> add_option(string option, T data)
     {
-        options[option] = data;
+        options[option.down ()] = data;
         CheckListEntry<T> check = new CheckListEntry<T>(option, data);
         tag_list.add(check);
 
@@ -109,7 +112,7 @@ public abstract class SelectionPopover<T> : Popover
 
     private void handle_add()
     {
-        T? item = create_item(search_entry.text);
+        T? item = create_item(search_entry.text.strip ());
         if(search_entry.text.length != 0 && item != null)
             add_option(search_entry.text, item);
     }
@@ -125,19 +128,22 @@ public abstract class SelectionPopover<T> : Popover
 
     private void update_search()
     {
+        search_text = search_entry.text.strip ().down ();
+        if (add_button != null) {
+            add_button.sensitive = search_text.length > 0 && !options.has_key (search_text);
+        }
         tag_list.invalidate_filter();
     }
 
     private bool update_filter(ListBoxRow child)
     {
-        string filter_text = search_entry.text.strip().down();
-        if(filter_text.length == 0) {
+        if(search_text.length == 0) {
             return true;
         }
 
         CheckListEntry? entry = child as CheckListEntry;
 
-        return entry == null || entry.title.down().contains(filter_text);
+        return entry == null || entry.title.down().contains(search_text);
     }
 
     private int update_sort(ListBoxRow child1, ListBoxRow child2)
@@ -149,6 +155,9 @@ public abstract class SelectionPopover<T> : Popover
 
         return intelligent_compare(entry1.title, entry2.title);
     }
+
+    private Button? add_button;
+    private string search_text = "";
 }
 
 public abstract class SingleSelectionPopover<T> : SelectionPopover<T>
